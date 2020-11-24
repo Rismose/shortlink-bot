@@ -8,7 +8,9 @@ A discord bot that bypasses links using node-fetch, and Eris.
 
 3. `npm i` to install necessary dependencies.
 
-4. Create a `.env` file and put the following in. ```
+4. Create a `.env` file and put the following in. 
+
+```
 token=
 prefix=
 ```
