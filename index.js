@@ -35,7 +35,7 @@ client.on("messageCreate", (msg) => {
 					            "text": "github @ respecting/linkvertise-bot, code derived from thebypasser.com"
 					        },
 					        "thumbnail": {
-					            "url": "https://cdn.linkvertise.com/favicons/https%3A//mediafire.com/favicon"
+					            "url": favicon
 					        },
 					        "author": {
 					            "name": "Linkvertise Bypass",
