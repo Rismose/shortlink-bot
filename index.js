@@ -14,12 +14,13 @@ client.on('error', error => {
 
 client.on("messageCreate", (msg) => {
 	if(msg.content.startsWith(process.env.prefix+'help')) {
-		client.createMessage(msg.channel.id, {"embed":{"title":"Commands", "fields": [{"name":"help", "value": "Displays help. Usage: help"}, {"name":"bypass", "value": "Bypasses linkvertise link. Usage: linkvertise [link]"}]}})
+		client.createMessage(msg.channel.id, {"embed":{"title":"Commands", "fields": [{"name":"help", "value": "Displays help. Usage: `help`"}, {"name":"bypass", "value": "Bypasses a linkvertise link. Usage: `bypass [link]`"}]}})
 	}
-    if(msg.content.startsWith(process.env.prefix+'bypass ')) {
-    	if(!msg.content.split(' ')[1].includes('http') & !msg.content.split(' ')[1].includes('://')) return client.createMessage(msg.channel.id, "Not a valid linkvertise link.").then(msg=>setTimeout(()=>msg.delete(),3000)); //catch if not a link at all.
+    if(msg.content.startsWith(process.env.prefix+'bypass')) {
+    	if(!msg.content.includes(' ')) return client.createMessage(msg.channel.id, {"embed":{"title": `Usage`, "description": "`bypass [link]`"}}).then(msg=>setTimeout(()=>msg.delete(),3000));
+    	if(!msg.content.split(' ')[1].includes('http') & !msg.content.split(' ')[1].includes('://')) return client.createMessage(msg.channel.id, {"embed":{"title": `Usage`, "description": "`bypass [link]`"}}).then(msg=>setTimeout(()=>msg.delete(),3000)); //catch if not a link at all.
     	let path = new URL(msg.content.split(' ')[1]).pathname //get path
-    	if(path=="/") return client.createMessage(msg.channel.id, "Not a valid linkvertise link.").then(msg=>setTimeout(()=>msg.delete(),3000)); //catch if no path
+    	if(path=="/") return client.createMessage(msg.channel.id, {"embed":{"title": `Usage`, "description": "`bypass [link]`"}}).then(msg=>setTimeout(()=>msg.delete(),3000)); //catch if no path
     	msg.channel.sendTyping();
     	fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static'+path)
     	.then(r=>r.json())
