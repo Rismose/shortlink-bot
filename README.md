@@ -1,6 +1,9 @@
 # linkvertise-bot
 A discord bot that bypasses links using node-fetch, and Eris.
 
+# Invite
+[Invite Linkvertise Bypass Bot into your Discord!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=8)
+
 # Usage
 1. Clone this repository
 
@@ -26,4 +29,6 @@ prefix=
 # Commands
 
 `linkvertise [link]`
+
 `help`
+
