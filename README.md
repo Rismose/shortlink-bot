@@ -22,3 +22,7 @@ prefix=
 7. `node index.js` to start running the bot.
 
 8. Profit!
+
+# Commands
+
+linkvertise [link]
