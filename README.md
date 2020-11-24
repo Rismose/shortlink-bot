@@ -26,3 +26,4 @@ prefix=
 # Commands
 
 `linkvertise [link]`
+`help`

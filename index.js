@@ -8,6 +8,9 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", (msg) => {
+	if(msg.content.startsWith(process.env.prefix+'help')) {
+		client.createMessage(msg.channel.id, {"embed":{"title":"Commands", "fields": [{"name":"help", "value": "Displays help. Usage: help"}, {"name":"linkvertise", "value": "Bypasses linkvertise link. Usage: linkvertise [link]"}]}})
+	}
     if(msg.content.startsWith(process.env.prefix+'linkvertise ')) {
     	if(!msg.content.split(' ')[1].includes('http') & !msg.content.split(' ')[1].includes('://')) return client.createMessage(msg.channel.id, "Not a valid linkvertise link.").then(msg=>setTimeout(()=>msg.delete(),3000)); //catch if not a link at all.
     	let path = new URL(msg.content.split(' ')[1]).pathname //get path
