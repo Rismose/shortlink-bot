@@ -25,4 +25,4 @@ prefix=
 
 # Commands
 
-linkvertise [link]
+`linkvertise [link]`
