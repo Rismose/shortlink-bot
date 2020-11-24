@@ -11,7 +11,7 @@ client.on("messageCreate", (msg) => {
     if(msg.content.startsWith(process.env.prefix+'linkvertise ')) {
     	let path = new URL(msg.content.split(' ')[1]).pathname //get path
     	fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static'+path)
-    	.then(res=>res.json())
+    	.then(res=>res.json()).catch(client.createMessage(msg.channel.id, "Not a valid linkvertise link."))
     	.then(json=>{
     		serial = Buffer.from(JSON.stringify({
     			"timestamp": new Date().getTime(),
