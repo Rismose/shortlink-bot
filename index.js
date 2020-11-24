@@ -5,7 +5,7 @@ fetch = require('node-fetch');
 
 client.on("ready", () => {
     console.log("Ready!");
-    client.editStatus("online", {"name":`for ${process.env.prefix}bypass`, "type": "2"});
+    client.editStatus("online", {name: `${process.env.prefix}bypass`, type: 2});
 });
 
 client.on('error', error => {
