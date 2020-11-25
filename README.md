@@ -8,8 +8,23 @@ A discord bot that bypasses links using node-fetch, and Eris.
 # Invite
 [Invite Linkvertise Bypass Bot into your Discord!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=8)
 
+# Looking for a website?
+[Over here!](http://lem0ns.me/linkvertise-bypass)
+
 # Credits
 [Sainan/Universal-Bypass](https://github.com/Sainan/Universal-Bypass)
+
+# How does it work?
+The bot sends a request to Linkvertise (https://publisher.linkvertise.com/api/v1/redirect/link/static/insert/linkvertise/path/here) and obtains the link id necessary to get the link.
+
+Then, it sends another request to them (https://publisher.linkvertise.com/api/v1/redirect/link/insert/linkvertise/path/here/target?serial=base64encodedjson) to grab the link.
+
+The linkvertise path is this part. (/respecting/linkvertise-bypass/)
+
+An example of a serial is: 
+`{"timestamp":1606260928, "random":"6548307", "link_id":31283553}`
+
+The timestamp is the unix epoch, random isn't really random (always has to be 6548307) and link_id is the id we obtained from the first request.
 
 # Usage
 1. Clone this repository
