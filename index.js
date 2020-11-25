@@ -14,7 +14,10 @@ client.on('error', error => {
 
 client.on("messageCreate", (msg) => {
 	if(msg.content.startsWith(process.env.prefix+'help')) {
-		client.createMessage(msg.channel.id, {"embed":{"title":"Commands", "fields": [{"name":"help", "value": "Displays help. Usage: `help`"}, {"name":"bypass", "value": "Bypasses a linkvertise link. Usage: `bypass [link]`"}]}})
+		client.createMessage(msg.channel.id, {"embed":{"title":"Commands", "fields": [{"name":"help", "value": "Displays help. Usage: `help`"}, {"name":"invite", "value": "Displays the invite to the bot. Usage: `invite`"}, {"name":"bypass", "value": "Bypasses a linkvertise link. Usage: `bypass [link]`"}], "author": {"name": "Linkvertise Bypass Bot","url": "https://github.com/respecting/linkvertise-bot","icon_url": "https://i.imgur.com/601T9uY.png"}}})
+	}
+	if(msg.content.startsWith(process.env.prefix+'invite')) {
+		client.createMessage(msg.channel.id, {"embed":{"title":"Invite", "description": "[Click me!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=8)", "author": {"name": "Linkvertise Bypass Bot","url": "https://github.com/respecting/linkvertise-bot","icon_url": "https://i.imgur.com/601T9uY.png"}}})
 	}
     if(msg.content.startsWith(process.env.prefix+'bypass')) {
     	if(!msg.content.includes(' ')) return client.createMessage(msg.channel.id, {"embed":{"title": `Usage`, "description": "`bypass [link]`"}}).then(msg=>setTimeout(()=>msg.delete(),3000));
@@ -47,7 +50,7 @@ client.on("messageCreate", (msg) => {
 					            "url": favicon
 					        },
 					        "author": {
-					            "name": "Linkvertise Bypass",
+					            "name": "Linkvertise Bypass Bot",
 					            "url": "https://github.com/respecting/linkvertise-bot",
 					            "icon_url": "https://i.imgur.com/601T9uY.png"
 					        },
