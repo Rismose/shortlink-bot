@@ -177,7 +177,7 @@ async function bypass(url, id) {
 function linkvertise(url, id, msg) {
         let ping = new Date().getTime();
         let path = url.pathname
-        if(path.startsWith("/download/")) path = `/${path.replace('/download','').split('/')[1]}/${path.replace('/download','').split('/')[2]}`
+        path = `/${path.replace('/download','').split('/')[1]}/${path.replace('/download','').split('/')[2]}`
         fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static' + path).then(r => r.json()).then(json => {
                 o = Buffer.from(JSON.stringify({
                         "timestamp": new Date().getTime(),
