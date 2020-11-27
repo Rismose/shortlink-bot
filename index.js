@@ -1,55 +1,70 @@
 require('dotenv').config();
 const Eris = require("eris"),
-        client = new Eris(process.env.token),
-        fetch = require('node-fetch'),
-        ipLoggers = [
-                "viral.over-blog.com",
-                "gyazo.in",
-                "ps3cfw.com",
-                "urlz.fr",
-                "webpanel.space",
-                "steamcommumity.com",
-                "imgur.com.de",
-                "fuglekos.com",
-                "grabify.link",
-                "leancoding.co",
-                "stopify.co",
-                "freegiftcards.co",
-                "joinmy.site",
-                "curiouscat.club",
-                "catsnthings.fun",
-                "catsnthings.com",
-                "xn--yutube-iqc.com",
-                "gyazo.nl",
-                "yip.su",
-                "iplogger.com",
-                "iplogger.org",
-                "iplogger.ru",
-                "2no.co",
-                "02ip.ru",
-                "iplis.ru",
-                "iplo.ru",
-                "ezstat.ru",
-                "whatstheirip.com",
-                "hondachat.com",
-                "bvog.com",
-                "youramonkey.com",
-                "pronosparadise.com",
-                "freebooter.pro",
-                "blasze.com",
-                "blasze.tk",
-                "ipgrab.org",
-                "gyazos.com",
-                "discord.kim"
-        ];
+client = new Eris(process.env.token),
+fetch = require('node-fetch'),
+ipLoggers = [
+        "viral.over-blog.com",
+        "gyazo.in",
+        "ps3cfw.com",
+        "urlz.fr",
+        "webpanel.space",
+        "steamcommumity.com",
+        "imgur.com.de",
+        "fuglekos.com",
+        "grabify.link",
+        "leancoding.co",
+        "stopify.co",
+        "freegiftcards.co",
+        "joinmy.site",
+        "curiouscat.club",
+        "catsnthings.fun",
+        "catsnthings.com",
+        "xn--yutube-iqc.com",
+        "gyazo.nl",
+        "yip.su",
+        "iplogger.com",
+        "iplogger.org",
+        "iplogger.ru",
+        "2no.co",
+        "02ip.ru",
+        "iplis.ru",
+        "iplo.ru",
+        "ezstat.ru",
+        "whatstheirip.com",
+        "hondachat.com",
+        "bvog.com",
+        "youramonkey.com",
+        "pronosparadise.com",
+        "freebooter.pro",
+        "blasze.com",
+        "blasze.tk",
+        "ipgrab.org",
+        "gyazos.com",
+        "discord.kim"
+];
+let status = 1;
 
 client.on("ready", () => {
         console.log("Ready!");
-        client.editStatus("online", {
-                name: `${process.env.prefix}bypass`,
-                type: 2
-        });
+        setInterval(()=>{
+                statusSwitch();
+        }, 10000)
 });
+
+function statusSwitch() {
+        if(status==1) {
+                status = 2;
+                client.editStatus("online", {
+                        name: `${process.env.prefix}bypass`,
+                        type: 2
+                 });
+        } else if (status==2) {
+                client.editStatus("online", {
+                        name: client.guilds.size+" guilds",
+                        type: 3
+                 });
+        }
+}
 
 client.on('error', error => {
         console.warn('bot crashed due to ' + error)
@@ -160,7 +175,7 @@ async function bypass(url, id) {
 }
 
 function linkvertise(url, id, msg) {
-        let ping = new Date().getTime()
+        let ping = new Date().getTime();
         let path = url.pathname
         fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static' + path).then(r => r.json()).then(json => {
                 o = Buffer.from(JSON.stringify({
@@ -168,14 +183,13 @@ function linkvertise(url, id, msg) {
                         "random": "6548307",
                         "link_id": json.data.link.id
                 }), 'utf-8').toString('base64'); //get link id, make serial and convert to base64
-                let favicon = json.data.link.favicon_url
         }).then(() => {
                 fetch('https://publisher.linkvertise.com/api/v1/redirect/link' + path + '/target?serial=' + o).then(r => r.json()).then(json => {
                         if (msg) return client.createMessage(msg.channel.id, {
                                 "embed": {
                                         "title": "Ping",
                                         "fields": [{
-                                                "name": "Bot",
+                                                "name": "Discord API",
                                                 "value": ping - msg.createdAt + " ms"
                                         }, {
                                                 "name": "Linkvertise Bypass",
@@ -191,9 +205,6 @@ function linkvertise(url, id, msg) {
                                                 "footer": {
                                                         "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
                                                         "text": "github @ respecting/shortlink-bot, code derived from Sainan/Universal-Bypass"
-                                                },
-                                                "thumbnail": {
-                                                        "url": favicon
                                                 },
                                                 "author": {
                                                         "name": "Shortlink Bot",
@@ -246,7 +257,7 @@ client.on("messageCreate", (msg) => {
                 client.createMessage(msg.channel.id, {
                         "embed": {
                                 "title": "Invite",
-                                "description": "[Click me!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=8)",
+                                "description": "[Click me!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=3072)",
                                 "author": {
                                         "name": "Shortlink Bot",
                                         "url": "https://github.com/respecting/shortlink-bot",
