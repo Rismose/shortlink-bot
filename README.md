@@ -1,4 +1,4 @@
-# linkvertise-bot
+# shortlink-bot
 A discord bot that bypasses links using node-fetch, and Eris.
 
 # Demo
@@ -6,13 +6,10 @@ A discord bot that bypasses links using node-fetch, and Eris.
 ![Demo](demo.gif)
 
 # Invite
-[Invite Linkvertise Bypass Bot into your Discord!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=8)
-
-# Looking for a website?
-[Over here!](http://lem0ns.me/linkvertise-bypass)
+[Invite Shortlink Bot into your Discord!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=8)
 
 # Credits
-[Sainan/Universal-Bypass](https://github.com/Sainan/Universal-Bypass)
+[Sainan/Universal-Bypass](https://github.com/Sainan/Universal-Bypass) for linkvertise.
 
 # How does it work?
 The bot sends a request to Linkvertise (https://publisher.linkvertise.com/api/v1/redirect/link/static/insert/linkvertise/path/here) and obtains the link id necessary to get the link.
