@@ -59,6 +59,7 @@ function statusSwitch() {
                         type: 2
                  });
         } else if (status==2) {
+                status = 1;
                 client.editStatus("online", {
                         name: client.guilds.size+" guilds",
                         type: 3
