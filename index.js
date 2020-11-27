@@ -46,9 +46,7 @@ let status = 1;
 
 client.on("ready", () => {
         console.log("Ready!");
-        setInterval(()=>{
-                statusSwitch();
-        }, 10000)
+        setInterval(()=>statusSwitch(), 5000)
 });
 
 function statusSwitch() {
@@ -81,7 +79,7 @@ function validateUrl(url, id) {
                                 "color": 15158332,
                                 "footer": {
                                         "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                                        "text": "github @ respecting/shortlink-bot, code derived from Sainan/Universal-Bypass"
+                                        "text": "github @ respecting/shortlink-bot"
                                 },
                                 "author": {
                                         "name": "Shortlink Bot",
@@ -99,7 +97,7 @@ function validateUrl(url, id) {
                                 "color": 15158332,
                                 "footer": {
                                         "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                                        "text": "github @ respecting/shortlink-bot, code derived from Sainan/Universal-Bypass"
+                                        "text": "github @ respecting/shortlink-bot"
                                 },
                                 "author": {
                                         "name": "Shortlink Bot",
@@ -112,8 +110,9 @@ function validateUrl(url, id) {
 }
 async function bypass(url, id) {
         try {
-                let resp = await fetch(url.href)
-                let html = await resp.text()
+                let timestamp = new Date().getTime(),
+                resp = await fetch(url.href),
+                html = await resp.text();
                 if (html.includes('<title>Loading... | Linkvertise</title>')) linkvertise(url, id);
                 else {
                         if (url.href == resp.url) return client.createMessage(id, {
@@ -138,7 +137,7 @@ async function bypass(url, id) {
                                         "color": 1964014,
                                         "footer": {
                                                 "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                                                "text": "github @ respecting/shortlink-bot, code derived from Sainan/Universal-Bypass"
+                                                "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
                                         },
                                         "author": {
                                                 "name": "Shortlink Bot",
@@ -163,7 +162,7 @@ async function bypass(url, id) {
                                 "color": 15158332,
                                 "footer": {
                                         "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                                        "text": "github @ respecting/shortlink-bot, code derived from Sainan/Universal-Bypass"
+                                        "text": "github @ respecting/shortlink-bot"
                                 },
                                 "author": {
                                         "name": "Shortlink Bot",
@@ -201,11 +200,11 @@ function linkvertise(url, id, msg) {
                         let bypassedLink = new URLSearchParams(new URL(json.data.target).search).get('k'), //bypassed link
                                 embed = {
                                         "embed": {
-                                                "title": "Bypassed the link sucessfully.",
+                                                "title": `Bypassed the link successfully in ${new Date().getTime()-ping} ms.`,
                                                 "color": 1964014,
                                                 "footer": {
                                                         "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                                                        "text": "github @ respecting/shortlink-bot, code derived from Sainan/Universal-Bypass"
+                                                        "text": `github @ respecting/shortlink-bot, creds: Sainan/Universal-Bypass`
                                                 },
                                                 "author": {
                                                         "name": "Shortlink Bot",
@@ -288,6 +287,7 @@ client.on("messageCreate", (msg) => {
                 validateUrl(msg.content.split(' ')[1], msg.channel.id)
         }
         if (msg.content.startsWith(process.env.prefix + 'ping')) {
+                msg.channel.sendTyping();
                 linkvertise(new URL("https://up-to-down.net/180849/respecting"), 1, msg);
         }
 });
