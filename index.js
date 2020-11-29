@@ -109,37 +109,13 @@ function validateUrl(url, id) {
         }
 }
 
-function boostink(html, url, id, timestamp) {
-    client.createMessage(id, {
-                                "embed": {
-                                        "title": "Bypassed the link sucessfully.",
-                                        "color": 1964014,
-                                        "footer": {
-                                                "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                                                "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
-                                        },
-                                        "author": {
-                                                "name": "Shortlink Bot",
-                                                "url": "https://github.com/respecting/shortlink-bot",
-                                                "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                                        },
-                                        "fields": [{
-                                                "name": "Original Link:",
-                                                "value": "[" + url.href + "](" + url.href + ")"
-                                        }, {
-                                                "name": "Bypassed Link:",
-                                                "value": "[" + Buffer.from(html.split('version=')[1].split('"')[1], 'base64').toString('ascii') + "](" + Buffer.from(html.split('version=')[1].split('"')[1], 'base64').toString('ascii') + ")"
-                                        }]
-                                }
-                        })
-}
-
 async function bypass(url, id) {
         try {
 
                 let timestamp = new Date().getTime(),
                 resp = await fetch(url.href),
                 html = await resp.text();
+                if(html.includes('<title>Shrink your URLs and get paid!</title>')) return adfly(html, url, id, timestamp)
                 if (html.includes(' - Sub2Unlock - ')) return s2u(url, id, html, timestamp);
                 if (html.includes('<title>Boost.ink - Complete the steps to proceed</title>')) return boostink(html, url, id, timestamp);
                 if (html.includes('<title>Loading... | Linkvertise</title>')) linkvertise(url, id);
@@ -201,6 +177,84 @@ async function bypass(url, id) {
                         }
                 })
         }
+}
+
+function boostink(html, url, id, timestamp) {
+    client.createMessage(id, {
+                                "embed": {
+                                        "title": "Bypassed the link sucessfully.",
+                                        "color": 1964014,
+                                        "footer": {
+                                                "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
+                                                "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
+                                        },
+                                        "author": {
+                                                "name": "Shortlink Bot",
+                                                "url": "https://github.com/respecting/shortlink-bot",
+                                                "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
+                                        },
+                                        "fields": [{
+                                                "name": "Original Link:",
+                                                "value": "[" + url.href + "](" + url.href + ")"
+                                        }, {
+                                                "name": "Bypassed Link:",
+                                                "value": "[" + Buffer.from(html.split('version=')[1].split('"')[1], 'base64').toString('ascii') + "](" + Buffer.from(html.split('version=')[1].split('"')[1], 'base64').toString('ascii') + ")"
+                                        }]
+                                }
+                        })
+}
+
+function adfly(html, url, id, timestamp) {
+    let a, m, I = "", X = "", r = html.split(`var ysmm = `)[1].split('\'')[1]
+    for (m = 0; m < r.length; m++) {
+        if (m % 2 == 0) {
+            I += r.charAt(m)
+        } else {
+            X = r.charAt(m) + X
+        }
+    }
+    r = I + X
+    a = r.split("")
+    for (m = 0; m < a.length; m++) {
+        if (!isNaN(a[m])) {
+            for (var R = m + 1; R < a.length; R++) {
+                if (!isNaN(a[R])) {
+                    let S = a[m] ^ a[R]
+                    if (S < 10) {
+                        a[m] = S
+                    }
+                    m = R
+                    R = a.length
+                }
+            }
+        }
+    }
+    r = a.join('')
+    r = Buffer.from(r,'base64').toString('ascii');
+    r = r.substring(r.length - (r.length - 16));
+    r = r.substring(0, r.length - 16);
+    client.createMessage(id, {
+                                "embed": {
+                                        "title": "Bypassed the link sucessfully.",
+                                        "color": 1964014,
+                                        "footer": {
+                                                "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
+                                                "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
+                                        },
+                                        "author": {
+                                                "name": "Shortlink Bot",
+                                                "url": "https://github.com/respecting/shortlink-bot",
+                                                "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
+                                        },
+                                        "fields": [{
+                                                "name": "Original Link:",
+                                                "value": "[" + url.href + "](" + url.href + ")"
+                                        }, {
+                                                "name": "Bypassed Link:",
+                                                "value": "[" + decodeURIComponent(r.split('dest=')[1]) + "](" + decodeURIComponent(r.split('dest=')[1]) + ")"
+                                        }]
+                                }
+                        })
 }
 
 function s2u(url, id, html, timestamp) {
