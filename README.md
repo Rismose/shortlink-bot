@@ -10,7 +10,8 @@ A discord bot that bypasses links using node-fetch, and Eris.
 
 # Demo
 
-![Demo](demo.gif) 
+![Demo](demo.gif)
+
 (replace ?linkvertise with ?bypass)
 
 # Credits
