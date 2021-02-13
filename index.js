@@ -332,7 +332,7 @@ function linkvertise(url, id, msg) {
                                         }]
                                 }
                         })
-                        let bypassedLink = new URLSearchParams(new URL(json.data.target).search).get('k'), //bypassed link
+                        let bypassedLink = json.data.target, //bypassed link
                                 embed = {
                                         "embed": {
                                                 "title": `Bypassed the link successfully in ${new Date().getTime()-ping} ms.`,
