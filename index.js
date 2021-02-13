@@ -46,7 +46,7 @@ let status = 1;
 
 client.on("ready", () => {
         console.log("Ready!");
-        setInterval(()=>statusSwitch(), 7500)
+        setInterval(()=>statusSwitch(), 30000)
 });
 
 function statusSwitch() {
