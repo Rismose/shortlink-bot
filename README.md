@@ -1,6 +1,10 @@
 # shortlink-bot
 A discord bot that bypasses links using node-fetch, and Eris.
 
+# Support Server
+
+[Click me!](https://discord.gg/YhkPFjrDjk)
+
 # Demo
 
 ![Demo](demo.gif)
@@ -50,4 +54,3 @@ prefix=
 `bypass [link]`
 
 `help`
-
