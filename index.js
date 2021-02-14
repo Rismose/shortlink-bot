@@ -124,7 +124,33 @@ async function bypass(url, id) {
                 if (html.includes('<title>Shrink your URLs and get paid!</title>')) return adfly(html, url, id, timestamp)
                 if (html.includes(' - Sub2Unlock - ')) return s2u(url, id, html, timestamp);
                 if (html.includes('<title>Boost.ink - Complete the steps to proceed</title>')) return boostink(html, url, id, timestamp);
-                if (html.includes('<title>Loading... | Linkvertise</title>')) linkvertise(url, id);
+                if (html.includes('<title>Loading... | Linkvertise</title>')) {
+                        if (url.href.includes("dynamic")) {
+                                return client.createMessage(id, {
+                                        "embed": {
+                                                "title": "Bypassed the link sucessfully.",
+                                                "color": 1964014,
+                                                "footer": {
+                                                        "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
+                                                        "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
+                                                },
+                                                "author": {
+                                                        "name": "Shortlink Bot",
+                                                        "url": "https://github.com/respecting/shortlink-bot",
+                                                        "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
+                                                },
+                                                "fields": [{
+                                                        "name": "Original Link:",
+                                                        "value": "[" + url.href + "](" + url.href + ")"
+                                                }, {
+                                                        "name": "Bypassed Link:",
+                                                        "value": "[" + Buffer.from(new URLSearchParams(url.search).get("r"), 'base64').toString('ascii') + "](" + Buffer.from(new URLSearchParams(url.search).get("r"), 'base64').toString('ascii') + ")"
+                                                }]
+                                        }
+                                })
+                        }
+                        linkvertise(url, id);
+                }
                 else {
                         if (url.href == resp.url) return client.createMessage(id, {
                                 "embed": {
