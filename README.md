@@ -5,17 +5,19 @@ A discord bot that bypasses links using node-fetch, and Eris.
 
 [Click me!](https://discord.gg/YhkPFjrDjk)
 
+# Invite
+[Invite Shortlink Bot into your Discord!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=52224) The prefix is | (pipe).
+
 # Demo
 
 ![Demo](demo.gif)
 
-# Invite
-[Invite Shortlink Bot into your Discord!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=52224)
+(replace ?linkvertise with ?bypass)
 
 # Credits
 [Sainan/Universal-Bypass](https://github.com/Sainan/Universal-Bypass) for linkvertise.
 
-# How does it work?
+# How does it work? (for bypassing linkvertise?)
 The bot sends a request to Linkvertise (https://publisher.linkvertise.com/api/v1/redirect/link/static/insert/linkvertise/path/here) and obtains the link id necessary to get the link.
 
 Then, it sends another request to them (https://publisher.linkvertise.com/api/v1/redirect/link/insert/linkvertise/path/here/target?serial=base64encodedjson) to grab the link.
