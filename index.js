@@ -150,8 +150,7 @@ async function bypass(url, id) {
                                 })
                         }
                         linkvertise(url, id);
-                }
-                else {
+                } else {
                         if (url.href == resp.url) return client.createMessage(id, {
                                 "embed": {
                                         "title": "ERROR",
