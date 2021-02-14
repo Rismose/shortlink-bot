@@ -111,7 +111,12 @@ function validateUrl(url, id) {
 
 async function bypass(url, id) {
         try {
-
+                if (url.hostname.includes("bit.ly")) {
+                        let timestamp = new Date().getTime(),
+                        resp = await fetch(url.href+"+"),
+                        html = await resp.text();
+                        return bitly(html,url,id,timestamp)
+                }
                 let timestamp = new Date().getTime(),
                 resp = await fetch(url.href),
                 html = await resp.text();
@@ -178,6 +183,31 @@ async function bypass(url, id) {
                         }
                 })
         }
+}
+
+function bitly(html,url,id,timestamp) {
+        client.createMessage(id, {
+                "embed": {
+                        "title": "Bypassed the link sucessfully.",
+                        "color": 1964014,
+                        "footer": {
+                                "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
+                                "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
+                        },
+                        "author": {
+                                "name": "Shortlink Bot",
+                                "url": "https://github.com/respecting/shortlink-bot",
+                                "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
+                        },
+                        "fields": [{
+                                "name": "Original Link:",
+                                "value": "[" + url.href + "](" + url.href + ")"
+                        }, {
+                                "name": "Bypassed Link:",
+                                "value": "[" + html.split('"long_url": "')[1].split('"')[0] + "](" + html.split('"long_url": "')[1].split('"')[0] + ")"
+                        }]
+                }
+        })
 }
 
 function boostink(html, url, id, timestamp) {
