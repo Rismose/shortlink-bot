@@ -71,24 +71,66 @@ client.on('error', error => {
 
 function validateUrl(url, id) {
     try {
-        let myURL = new URL(url);
-        if (ipLoggers.includes(myURL.host)) return client.createMessage(id, {
-            "embed": {
-                "title": "ERROR",
-                "description": `The link provided (${myURL.host}) is an ip logger.`,
-                "color": 15158332,
-                "footer": {
-                    "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                    "text": "github @ respecting/shortlink-bot"
-                },
-                "author": {
-                    "name": "Shortlink Bot",
-                    "url": "https://github.com/respecting/shortlink-bot",
-                    "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                }
+        if (url.split(', ')[1]) {
+            let urls = [...new Set(url.split(', '))].filter(Boolean);
+            if (urls.length > 3) {
+                return client.createMessage(id, {
+                    "embed": {
+                        "title": "ERROR",
+                        "description": `Provided too many links! (Limit is 3.)`,
+                        "color": 15158332,
+                        "footer": {
+                            "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
+                            "text": "github @ respecting/shortlink-bot"
+                        },
+                        "author": {
+                            "name": "Shortlink Bot",
+                            "url": "https://github.com/respecting/shortlink-bot",
+                            "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
+                        }
+                    }
+                });
             }
-        });
-        bypass(myURL, id);
+            urls.forEach(url=>{
+                url = new URL(url);
+                if (ipLoggers.includes(url.host)) return client.createMessage(id, {
+                    "embed": {
+                        "title": "ERROR",
+                        "description": `The link provided (${myURL.host}) is an ip logger.`,
+                        "color": 15158332,
+                        "footer": {
+                            "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
+                            "text": "github @ respecting/shortlink-bot"
+                        },
+                        "author": {
+                            "name": "Shortlink Bot",
+                            "url": "https://github.com/respecting/shortlink-bot",
+                            "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
+                        }
+                    }
+                });
+                bypass(url, id)
+            })
+        } else {
+            let myURL = new URL(url);
+            if (ipLoggers.includes(myURL.host)) return client.createMessage(id, {
+                "embed": {
+                    "title": "ERROR",
+                    "description": `The link provided (${myURL.host}) is an ip logger.`,
+                    "color": 15158332,
+                    "footer": {
+                        "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
+                        "text": "github @ respecting/shortlink-bot"
+                    },
+                    "author": {
+                        "name": "Shortlink Bot",
+                        "url": "https://github.com/respecting/shortlink-bot",
+                        "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
+                    }
+                }
+            });
+            bypass(myURL, id);
+        }
     } catch (e) {
         client.createMessage(id, {
             "embed": {
@@ -455,7 +497,7 @@ client.on("messageCreate", (msg) => {
             }
         })
         msg.channel.sendTyping();
-        validateUrl(msg.content.split(' ')[1], msg.channel.id)
+        validateUrl(msg.content.replace(process.env.prefix + 'bypass ', ''), msg.channel.id)
     }
     if (msg.content.startsWith(process.env.prefix + 'ping')) {
         msg.channel.sendTyping();
