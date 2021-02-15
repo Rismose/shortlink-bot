@@ -453,7 +453,7 @@ client.on("messageCreate", (msg) => {
                     "value": "Displays the invite to the bot. Usage: `invite`"
                 }, {
                     "name": "bypass",
-                    "value": "Get what's behind the shortlink. Usage: `bypass [link]`"
+                    "value": "Get what's behind the shortlink. Usage: `bypass link[, link[, link]]` (brackets mean optional)"
                 }, {
                     "name": "ping",
                     "value": "Get the ping for the bot & the linkvertise bypass. Usage: `ping`"
@@ -483,7 +483,7 @@ client.on("messageCreate", (msg) => {
         if (!msg.content.includes(' ')) return client.createMessage(msg.channel.id, {
             "embed": {
                 "title": "ERROR",
-                "description": `No link was provided. Usage: bypass link`,
+                "description": `No link was provided. Usage: \`bypass link[, link[, link]]\` (brackets mean optional)`,
                 "color": 15158332,
                 "footer": {
                     "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",

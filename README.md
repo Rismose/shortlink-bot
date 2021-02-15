@@ -53,6 +53,6 @@ prefix=
 
 # Commands
 
-`bypass [link]`
+`bypass link[, link[, link]] (brackets mean optional)`
 
 `help`
