@@ -6,7 +6,7 @@ A discord bot that bypasses links using node-fetch, and Eris.
 [Click me!](https://discord.gg/YhkPFjrDjk)
 
 # Invite
-[Invite Shortlink Bot into your Discord!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=52224) The prefix is | (pipe).
+[Invite Shortlink Bot into your Discord!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=52224) The prefix is - (pipe).
 
 # Demo
 
