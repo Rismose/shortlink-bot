@@ -105,7 +105,7 @@ function createErrorEmbed(errorInfo, id) {
                 "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
             }
         }
-    }).then(msg=>setTimeout(()=>msg.delete,5000))
+    }).then(msg=>setTimeout(()=>msg.delete(),3000))
 }
 
 client.on("ready", () => {
@@ -158,7 +158,7 @@ function validateUrl(url, msg, id, author) {
 
 async function bypass(url, msg, id, author) {
     try {
-        author.delete().catch();
+        author.delete().catch(()=>{createErrorEmbed('Please let me have access to Manage Messages so I can delete bypass commands.', id)});
         let timestamp = new Date().getTime(),
             resp = await fetch(url.href),
             html = await resp.text();
@@ -299,7 +299,7 @@ client.on("messageCreate", (msg) => {
         client.createMessage(msg.channel.id, {
             "embed": {
                 "title": "Invite",
-                "description": "[Click me!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=3072)",
+                "description": "[Click me!](https://discord.com/oauth2/authorize?client_id=780857188171644962&scope=bot&permissions=8192)",
                 "author": {
                     "name": "Shortlink Bot",
                     "url": "https://github.com/respecting/shortlink-bot",
