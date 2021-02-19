@@ -44,8 +44,73 @@ const Eris = require("eris"),
     ];
 let status = 1;
 
+function createBypassEmbed(url, bypassedUrl, time, msg, id) {
+    client.createMessage(id, {
+        "embed": {
+            "title": `Bypass sent!`,
+            "color": 1964014,
+            "footer": {
+                "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
+                "text": `github @ respecting/shortlink-bot`
+            },
+            "author": {
+                "name": "Shortlink Bot",
+                "url": "https://github.com/respecting/shortlink-bot",
+                "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
+            },
+            "description": "See your DMs for your bypassed link."
+        }
+    }).then(msg=>setTimeout(()=>msg.delete(),5000))
+    return msg.createMessage({
+        "embed": {
+            "title": `Bypassed the link successfully in ${new Date().getTime()-time} ms.`,
+            "color": 1964014,
+            "footer": {
+                "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
+                "text": `github @ respecting/shortlink-bot`
+            },
+            "author": {
+                "name": "Shortlink Bot",
+                "url": "https://github.com/respecting/shortlink-bot",
+                "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
+            },
+            "fields": [{
+                    "name": "Original Link:",
+                    "value": "[" + url.href + "](" + url.href + ")"
+                },
+                {
+                    "name": "Bypassed Link:",
+                    "value": "[" + bypassedUrl + "](" + bypassedUrl + ")"
+                }
+            ]
+        }
+    }).catch(()=>{
+        createErrorEmbed("Please enable DMs.", id)
+    })
+}
+
+function createErrorEmbed(errorInfo, id) {
+    return client.createMessage(id, {
+        "embed": {
+            "title": "ERROR",
+            "description": errorInfo,
+            "color": 15158332,
+            "footer": {
+                "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
+                "text": "github @ respecting/shortlink-bot"
+            },
+            "author": {
+                "name": "Shortlink Bot",
+                "url": "https://github.com/respecting/shortlink-bot",
+                "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
+            }
+        }
+    }).then(msg=>setTimeout(()=>msg.delete,5000))
+}
+
 client.on("ready", () => {
     console.log("Ready!");
+    statusSwitch()
     setInterval(() => statusSwitch(), 30000)
 });
 
@@ -69,236 +134,63 @@ client.on('error', error => {
     console.warn('bot crashed due to ' + error)
 });
 
-function validateUrl(url, id) {
+function validateUrl(url, msg, id, author) {
     try {
         if (url.split(', ')[1]) {
             let urls = [...new Set(url.split(', '))].filter(Boolean);
             if (urls.length > 3) {
-                return client.createMessage(id, {
-                    "embed": {
-                        "title": "ERROR",
-                        "description": `Provided too many links! (Limit is 3.)`,
-                        "color": 15158332,
-                        "footer": {
-                            "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                            "text": "github @ respecting/shortlink-bot"
-                        },
-                        "author": {
-                            "name": "Shortlink Bot",
-                            "url": "https://github.com/respecting/shortlink-bot",
-                            "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                        }
-                    }
-                });
+                    return createErrorEmbed("Provided too many links! (Limit is 3.)", id);
             }
             urls.forEach(url=>{
                 url = new URL(url);
-                if (ipLoggers.includes(url.host)) return client.createMessage(id, {
-                    "embed": {
-                        "title": "ERROR",
-                        "description": `The link provided (${myURL.host}) is an ip logger.`,
-                        "color": 15158332,
-                        "footer": {
-                            "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                            "text": "github @ respecting/shortlink-bot"
-                        },
-                        "author": {
-                            "name": "Shortlink Bot",
-                            "url": "https://github.com/respecting/shortlink-bot",
-                            "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                        }
-                    }
-                });
-                bypass(url, id)
+                if (ipLoggers.includes(url.host)) return createErrorEmbed(`The link provided (${myURL.host}) is an ip logger.`, id);
+                bypass(url, msg, id, author)
             })
         } else {
             let myURL = new URL(url);
-            if (ipLoggers.includes(myURL.host)) return client.createMessage(id, {
-                "embed": {
-                    "title": "ERROR",
-                    "description": `The link provided (${myURL.host}) is an ip logger.`,
-                    "color": 15158332,
-                    "footer": {
-                        "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                        "text": "github @ respecting/shortlink-bot"
-                    },
-                    "author": {
-                        "name": "Shortlink Bot",
-                        "url": "https://github.com/respecting/shortlink-bot",
-                        "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                    }
-                }
-            });
-            bypass(myURL, id);
+            if (ipLoggers.includes(myURL.host)) return createErrorEmbed(`The link provided (${myURL.host}) is an ip logger.`, id);
+            bypass(myURL, msg, id, author);
         }
     } catch (e) {
-        client.createMessage(id, {
-            "embed": {
-                "title": "ERROR",
-                "description": `The link provided is invalid.`,
-                "color": 15158332,
-                "footer": {
-                    "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                    "text": "github @ respecting/shortlink-bot"
-                },
-                "author": {
-                    "name": "Shortlink Bot",
-                    "url": "https://github.com/respecting/shortlink-bot",
-                    "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                }
-            }
-        })
+        createErrorEmbed(`The link provided is invalid.`, id);
     }
 }
 
-async function bypass(url, id) {
+async function bypass(url, msg, id, author) {
     try {
+        author.delete().catch();
         let timestamp = new Date().getTime(),
             resp = await fetch(url.href),
             html = await resp.text();
-        if (url.hostname.includes("mboost.me")) return mboost(html, new URL(resp.url), id, timestamp)
-        if (html.includes('<title>Shrink your URLs and get paid!</title>')) return adfly(html, new URL(resp.url), id, timestamp)
-        if (html.includes(' - Sub2Unlock - ')) return s2u(new URL(resp.url), id, html, timestamp);
-        if (html.includes('<title>Boost.ink - Complete the steps to proceed</title>')) return boostink(html, new URL(resp.url), id, timestamp);
+        if (url.hostname.includes("mboost.me")) return mboost(html, new URL(resp.url), msg, timestamp, id);
+        if (html.includes('<title>Shrink your URLs and get paid!</title>')) return adfly(html, new URL(resp.url), msg, timestamp, id)
+        if (html.includes(' - Sub2Unlock - ')) return s2u(new URL(resp.url), msg, html, timestamp, id);
+        if (html.includes('<title>Boost.ink - Complete the steps to proceed</title>')) return boostink(html, new URL(resp.url), msg, timestamp, id);
         if (html.includes('<title>Loading... | Linkvertise</title>')) {
             if (url.href.includes("dynamic")) {
-                return client.createMessage(id, {
-                    "embed": {
-                        "title": "Bypassed the link sucessfully.",
-                        "color": 1964014,
-                        "footer": {
-                            "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                            "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
-                        },
-                        "author": {
-                            "name": "Shortlink Bot",
-                            "url": "https://github.com/respecting/shortlink-bot",
-                            "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                        },
-                        "fields": [{
-                            "name": "Original Link:",
-                            "value": "[" + url.href + "](" + url.href + ")"
-                        }, {
-                            "name": "Bypassed Link:",
-                            "value": "[" + Buffer.from(new URLSearchParams(url.search).get("r"), 'base64').toString('ascii') + "](" + Buffer.from(new URLSearchParams(url.search).get("r"), 'base64').toString('ascii') + ")"
-                        }]
-                    }
-                })
+                return createBypassEmbed(url, Buffer.from(new URLSearchParams(url.search).get("r"), 'base64').toString('ascii'), timestamp, msg, id);
             }
-            linkvertise(new URL(resp.url), id);
+            linkvertise(new URL(resp.url), msg, id);
         } else {
-            if (url.href == new URL(resp.url)) return client.createMessage(id, {
-                "embed": {
-                    "title": "ERROR",
-                    "description": `The link provided is invalid.`,
-                    "color": 15158332,
-                    "footer": {
-                        "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                        "text": "github @ respecting/shortlink-bot, code derived from Sainan/Universal-Bypass"
-                    },
-                    "author": {
-                        "name": "Shortlink Bot",
-                        "url": "https://github.com/respecting/shortlink-bot",
-                        "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                    }
-                }
-            });
-            client.createMessage(id, {
-                "embed": {
-                    "title": "Bypassed the link sucessfully.",
-                    "color": 1964014,
-                    "footer": {
-                        "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                        "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
-                    },
-                    "author": {
-                        "name": "Shortlink Bot",
-                        "url": "https://github.com/respecting/shortlink-bot",
-                        "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                    },
-                    "fields": [{
-                        "name": "Original Link:",
-                        "value": "[" + url.href + "](" + url.href + ")"
-                    }, {
-                        "name": "Bypassed Link:",
-                        "value": "[" + resp.url + "](" + resp.url + ")"
-                    }]
-                }
-            })
+            if (url.href == new URL(resp.url)) return createErrorEmbed('The link provided is invalid.', id)
+            createBypassEmbed(url, resp.url, timestamp, msg, id)
         }
     } catch {
-        client.createMessage(id, {
-            "embed": {
-                "title": "ERROR",
-                "description": `The link provided (${url.href}) is invalid.`,
-                "color": 15158332,
-                "footer": {
-                    "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                    "text": "github @ respecting/shortlink-bot"
-                },
-                "author": {
-                    "name": "Shortlink Bot",
-                    "url": "https://github.com/respecting/shortlink-bot",
-                    "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                }
-            }
-        })
+        createErrorEmbed(`The link provided (${url.href}) is invalid.`, id)
     }
 }
 
 
 
-function boostink(html, url, id, timestamp) {
-    client.createMessage(id, {
-        "embed": {
-            "title": "Bypassed the link sucessfully.",
-            "color": 1964014,
-            "footer": {
-                "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
-            },
-            "author": {
-                "name": "Shortlink Bot",
-                "url": "https://github.com/respecting/shortlink-bot",
-                "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-            },
-            "fields": [{
-                "name": "Original Link:",
-                "value": "[" + url.href + "](" + url.href + ")"
-            }, {
-                "name": "Bypassed Link:",
-                "value": "[" + Buffer.from(html.split('version=')[1].split('"')[1], 'base64').toString('ascii') + "](" + Buffer.from(html.split('version=')[1].split('"')[1], 'base64').toString('ascii') + ")"
-            }]
-        }
-    })
+function boostink(html, url, msg, timestamp, id) {
+    createBypassEmbed(url, Buffer.from(html.split('version=')[1].split('"')[1], 'base64').toString('ascii'), timestamp, msg, id)
 }
 
-function mboost(html, url, id, timestamp) {
-    client.createMessage(id, {
-        "embed": {
-            "title": "Bypassed the link sucessfully.",
-            "color": 1964014,
-            "footer": {
-                "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
-            },
-            "author": {
-                "name": "Shortlink Bot",
-                "url": "https://github.com/respecting/shortlink-bot",
-                "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-            },
-            "fields": [{
-                "name": "Original Link:",
-                "value": "[" + url.href + "](" + url.href + ")"
-            }, {
-                "name": "Bypassed Link:",
-                "value": "[" + html.split('{"pageProps":{"data":{"targeturl":"')[1].split('"')[0] + "](" + html.split('{"pageProps":{"data":{"targeturl":"')[1].split('"')[0] + ")"
-            }]
-        }
-    })
+function mboost(html, url, msg, timestamp, id) {
+    createBypassEmbed(url, html.split('{"pageProps":{"data":{"targeturl":"')[1].split('"')[0], timestamp, msg, id)
 }
 
-function adfly(html, url, id, timestamp) {
+function adfly(html, url, msg, timestamp, id) {
     let a, m, I = "",
         X = "",
         r = html.split(`var ysmm = `)[1].split('\'')[1]
@@ -329,64 +221,21 @@ function adfly(html, url, id, timestamp) {
     r = Buffer.from(r, 'base64').toString('ascii');
     r = r.substring(r.length - (r.length - 16));
     r = r.substring(0, r.length - 16);
-    client.createMessage(id, {
-        "embed": {
-            "title": "Bypassed the link sucessfully.",
-            "color": 1964014,
-            "footer": {
-                "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
-            },
-            "author": {
-                "name": "Shortlink Bot",
-                "url": "https://github.com/respecting/shortlink-bot",
-                "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-            },
-            "fields": [{
-                "name": "Original Link:",
-                "value": "[" + url.href + "](" + url.href + ")"
-            }, {
-                "name": "Bypassed Link:",
-                "value": "[" + decodeURIComponent(r.split('dest=')[1]) + "](" + decodeURIComponent(r.split('dest=')[1]) + ")"
-            }]
-        }
-    })
+    createBypassEmbed(url, decodeURIComponent(r.split('dest=')[1]), timestamp, msg, id)
 }
 
-function s2u(url, id, html, timestamp) {
-    client.createMessage(id, {
-        "embed": {
-            "title": "Bypassed the link sucessfully.",
-            "color": 1964014,
-            "footer": {
-                "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                "text": `github @ respecting/shortlink-bot, bypassed in ${new Date().getTime()-timestamp} ms`
-            },
-            "author": {
-                "name": "Shortlink Bot",
-                "url": "https://github.com/respecting/shortlink-bot",
-                "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-            },
-            "fields": [{
-                "name": "Original Link:",
-                "value": "[" + url.href + "](" + url.href + ")"
-            }, {
-                "name": "Bypassed Link:",
-                "value": "[" + html.split('<div id="theGetLink" style="display: none">')[1].split('</div>')[0] + "](" + html.split('<div id="theGetLink" style="display: none">')[1].split('</div>')[0] + ")"
-            }]
-        }
-    })
+function s2u(url, msg, html, timestamp, id) {
+    createBypassEmbed(url, html.split('<div id="theGetLink" style="display: none">')[1].split('</div>')[0], timestamp, msg, id)
 }
 
-function linkvertise(url, id, msg) {
-    let ping = new Date().getTime();
-    let path = url.pathname
-    path = `/${path.replace('/download','').split('/')[1]}/${path.replace('/download','').split('/')[2]}`
+function linkvertise(url, message, id, msg) {
+    let ping = new Date().getTime(),
+    path = `/${url.pathname.replace('/download','').split('/')[1]}/${url.pathname.replace('/download','').split('/')[2]}`;
     fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static' + path, {
         headers: {
             "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
         }
-    }).then(r => r.json()).then(json => {
+    }).catch(()=>createErrorEmbed('Linkvertise is ratelimited. Contact the bot developer.')).then(r => r.json()).then(json => {
         o = Buffer.from(JSON.stringify({
             "timestamp": new Date().getTime(),
             "random": "6548307",
@@ -397,50 +246,30 @@ function linkvertise(url, id, msg) {
             headers: {
                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
             }
-        }).then(r => r.json()).then(json => {
+        }).catch(()=>createErrorEmbed('Linkvertise is ratelimited. Contact the bot developer.')).then(r => r.json()).then(json => {
             if (msg) return client.createMessage(msg.channel.id, {
                 "embed": {
                     "title": "Ping",
                     "fields": [{
-                        "name": "Discord API",
-                        "value": ping - msg.createdAt + " ms"
+                        "name": "Discord API (inaccurate?)",
+                        "value": msg.createdAt - ping + " ms"
                     }, {
                         "name": "Linkvertise Bypass",
                         "value": new Date().getTime() - ping + " ms"
                     }]
                 }
             })
-            let bypassedLink = json.data.target, //bypassed link
-                embed = {
-                    "embed": {
-                        "title": `Bypassed the link successfully in ${new Date().getTime()-ping} ms.`,
-                        "color": 1964014,
-                        "footer": {
-                            "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                            "text": `github @ respecting/shortlink-bot, creds: Sainan/Universal-Bypass`
-                        },
-                        "author": {
-                            "name": "Shortlink Bot",
-                            "url": "https://github.com/respecting/shortlink-bot",
-                            "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                        },
-                        "fields": [{
-                                "name": "Original Link:",
-                                "value": "[" + url.href + "](" + url.href + ")"
-                            },
-                            {
-                                "name": "Bypassed Link:",
-                                "value": "[" + bypassedLink + "](" + bypassedLink + ")"
-                            }
-                        ]
-                    }
-                }; //embed
-            client.createMessage(id, embed); //send message
+            let bypassedLink = json.data.target; //bypassed link
+            createBypassEmbed(url, bypassedLink, ping, message, id) //send message
         })
     })
 }
 
 client.on("messageCreate", (msg) => {
+    if (msg.content.startsWith(process.env.prefix + 'ping')) {
+        msg.channel.sendTyping();
+        linkvertise(new URL("https://up-to-down.net/180849/respecting"), 1, 1, msg);
+    }
     if (msg.content.startsWith(process.env.prefix + 'help')) {
         client.createMessage(msg.channel.id, {
             "embed": {
@@ -480,28 +309,9 @@ client.on("messageCreate", (msg) => {
         })
     }
     if (msg.content.startsWith(process.env.prefix + 'bypass')) {
-        if (!msg.content.includes(' ')) return client.createMessage(msg.channel.id, {
-            "embed": {
-                "title": "ERROR",
-                "description": `No link was provided. Usage: \`bypass link[, link[, link]]\` (brackets mean optional)`,
-                "color": 15158332,
-                "footer": {
-                    "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                    "text": "github @ respecting/shortlink-bot, code derived from Sainan/Universal-Bypass"
-                },
-                "author": {
-                    "name": "Shortlink Bot",
-                    "url": "https://github.com/respecting/shortlink-bot",
-                    "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
-                }
-            }
-        })
+        if (!msg.content.includes(' ')) return createErrorEmbed(`No link was provided. Usage: \`bypass link[, link[, link]]\` (brackets mean optional)`, msg.channel.id)
         msg.channel.sendTyping();
-        validateUrl(msg.content.replace(process.env.prefix + 'bypass ', ''), msg.channel.id)
-    }
-    if (msg.content.startsWith(process.env.prefix + 'ping')) {
-        msg.channel.sendTyping();
-        linkvertise(new URL("https://up-to-down.net/180849/respecting"), 1, msg);
+        msg.author.getDMChannel().then(chan=>validateUrl(msg.content.replace(process.env.prefix + 'bypass ', ''), chan, msg.channel.id, msg))
     }
 });
 client.connect();
