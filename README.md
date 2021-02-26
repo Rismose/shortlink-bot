@@ -57,8 +57,6 @@ owner=
 
 10. Profit!
 
-# Commands
+# Formatting
 
-`bypass link[, link[, link]] (brackets mean optional)`
-
-`help`
+Please format your proxies like the chart listed [here](https://github.com/TooTallNate/node-proxy-agent/blob/master/README.md).
