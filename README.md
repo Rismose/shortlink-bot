@@ -41,15 +41,21 @@ The timestamp is the unix epoch, random isn't really random (always has to be 65
 ```
 token=
 prefix=
+invite=
+owner=
 ```
 
 5. Change prefix to whatever you like.
 
 6. Add token.
 
-7. `node index.js` to start running the bot.
+7. Put your invite code. (DO NOT PUT THE LINK!)
 
-8. Profit!
+8. Put your discord ID.
+
+9. `node index.js` to start running the bot.
+
+10. Profit!
 
 # Commands
 
