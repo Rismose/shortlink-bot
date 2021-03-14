@@ -20,7 +20,7 @@ module.exports = class PingCommand extends Command {
                 "description": errorInfo,
                 "color": 15158332,
                 "footer": {
-                    "icon_url": "https://github.githubassets.com/images/modules/open_graph/github-mark.png",
+                    "icon_url": "https://www.freepnglogos.com/uploads/discord-logo-png/concours-discord-cartes-voeux-fortnite-france-6.png",
                     "text": `Join our support server! https://discord.gg/${process.env.invite}`
                 },
                 "author": {

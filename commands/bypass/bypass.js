@@ -77,7 +77,7 @@ module.exports = class BypassCommand extends Command {
                     "title": `Bypassed the link successfully in ${new Date().getTime()-time} ms.`,
                     "color": 1964014,
                     "footer": {
-                        "icon_url": "https://github.githubassets.com/images/modules/open_graph/github-mark.png",
+                        "icon_url": "https://miro.medium.com/max/719/0*9f5uMrKMjLbzEf7q.png",
                         "text": `github @ Rismose/shortlink-bot`
                     },
                     "author": {
@@ -102,7 +102,7 @@ module.exports = class BypassCommand extends Command {
                 "title": `Bypass sent!`,
                 "color": 1964014,
                 "footer": {
-                    "icon_url": "https://github.githubassets.com/images/modules/open_graph/github-mark.png",
+                    "icon_url": "https://miro.medium.com/max/719/0*9f5uMrKMjLbzEf7q.png",
                     "text": `github @ Rismose/shortlink-bot`
                 },
                 "author": {
@@ -121,7 +121,7 @@ module.exports = class BypassCommand extends Command {
                 "description": errorInfo,
                 "color": 15158332,
                 "footer": {
-                    "icon_url": "https://github.githubassets.com/images/modules/open_graph/github-mark.png",
+                    "icon_url": "https://miro.medium.com/max/719/0*9f5uMrKMjLbzEf7q.png",
                     "text": `Join our support server! https://discord.gg/${process.env.invite}`
                 },
                 "author": {
