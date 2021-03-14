@@ -1,8 +1,9 @@
 # shortlink-bot
 A discord bot that bypasses pesky ad-links using node-fetch, and Discord.js-Commando.
 
-Originally created by the super cute respectful / lemons
-Now Maintained By Rismose & jiggey <3
+Originally created by the super cute [respecting / lemons](https://github.com/respecting)
+
+Now Maintained By [Rismose](https://github.com/Rismose) & [jiggey](https://github.com/jiggey1) <3
 
 # Support Server
 
