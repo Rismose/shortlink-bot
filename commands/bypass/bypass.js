@@ -218,6 +218,7 @@ module.exports = class BypassCommand extends Command {
                 }), 'utf-8').toString('base64'); //get link id, make serial and convert to base64
             }).then(() => {
                 if (!o) return;
+                try {
                 fetch('https://publisher.linkvertise.com/api/v1/redirect/link' + path + '/target?serial=' + o, {
                     method: "post",
                     headers: {
@@ -228,6 +229,9 @@ module.exports = class BypassCommand extends Command {
                     let bypassedLink = json.data.target; //bypassed link goes here.
                     createBypassEmbed(url, bypassedLink, ping)
                 })
+                }catch(e) {
+                    console.log(e)
+                }
             })
         }
 
