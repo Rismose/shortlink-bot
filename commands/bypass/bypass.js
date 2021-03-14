@@ -225,7 +225,7 @@ module.exports = class BypassCommand extends Command {
                         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
                     },
                 }).then(r => r.json()).then(json => {
-                    if (json._idleTimeout) return msg.channel.send("An error has occurred. Please try again later. If the error persists, please contact a bot developer.");
+                    if (json._idleTimeout) return msg.channel.send("An error has occurred. Please try again later.").msg.delete({timeout: 5000});
                     let bypassedLink = json.data.target; //bypassed link goes here.
                     createBypassEmbed(url, bypassedLink, ping)
                 })
