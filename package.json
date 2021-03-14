@@ -1,0 +1,27 @@
+{
+  "name": "shortlink-bot",
+  "version": "2.0.0",
+  "description": "A discord bot to reveal what's behind the shortlink. ",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "discord.js-commando": "github:discordjs/Commando",
+    "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.1",
+    "proxy-agent": "^4.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/respecting/shortlink-bot.git"
+  },
+  "author": "respecting",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/respecting/shortlink-bot/issues"
+  },
+  "homepage": "https://github.com/respecting/shortlink-bot#readme"
+}
