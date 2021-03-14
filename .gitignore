@@ -1,4 +1,4 @@
+.env
 node_modules/
 .DS_Store
 ShortlinkBotV2.zip
-.env
