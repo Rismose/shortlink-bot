@@ -1,5 +1,5 @@
 # shortlink-bot
-A discord bot that bypasses links using node-fetch, and Eris.
+A discord bot that bypasses pesky ad-links using node-fetch, and Discord.js-Commando
 
 # Support Server
 
@@ -10,12 +10,10 @@ A discord bot that bypasses links using node-fetch, and Eris.
 
 # Demo
 
-![Demo](demo.gif)
-
-(replace ?linkvertise with ?bypass)
+![Demo (Outdated)](demo.gif)
 
 # Credits
-[Sainan/Universal-Bypass](https://github.com/Sainan/Universal-Bypass) for linkvertise.
+[Sainan/Universal-Bypass](https://github.com/Sainan/Universal-Bypass) for old linkvertise bypass.
 
 # How does it work? (for bypassing linkvertise?)
 The bot sends a request to Linkvertise (https://publisher.linkvertise.com/api/v1/redirect/link/static/insert/linkvertise/path/here) and obtains the link id necessary to get the link.
@@ -25,7 +23,7 @@ Then, it sends another request to them (https://publisher.linkvertise.com/api/v1
 The linkvertise path is this part. (/respecting/linkvertise-bypass/)
 
 An example of a serial is: 
-`{"timestamp":1606260928, "random":"6548307", "link_id":31283553}`
+`{"timestamp":0000000000, "random":"6548307", "link_id":00000000}`
 
 The timestamp is the unix epoch, random isn't really random (always has to be 6548307) and link_id is the id we obtained from the first request.
 
