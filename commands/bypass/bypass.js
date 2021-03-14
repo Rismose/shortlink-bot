@@ -78,11 +78,11 @@ module.exports = class BypassCommand extends Command {
                     "color": 1964014,
                     "footer": {
                         "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                        "text": `github @ respecting/shortlink-bot`
+                        "text": `github @ Rismose/shortlink-bot`
                     },
                     "author": {
                         "name": "Shortlink Bot",
-                        "url": "https://github.com/respecting/shortlink-bot",
+                        "url": "https://github.com/Rismose/shortlink-bot",
                         "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
                     },
                     "fields": [{
@@ -103,11 +103,11 @@ module.exports = class BypassCommand extends Command {
                 "color": 1964014,
                 "footer": {
                     "icon_url": "https://avatars1.githubusercontent.com/u/62519659?s=460&u=4b87fac26aca329573e0ef1fa98502e44e78ee97&v=4",
-                    "text": `github @ respecting/shortlink-bot`
+                    "text": `github @ Rismose/shortlink-bot`
                 },
                 "author": {
                     "name": "Shortlink Bot",
-                    "url": "https://github.com/respecting/shortlink-bot",
+                    "url": "https://github.com/Rismose/shortlink-bot",
                     "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
                 },
                 "description": "See your DMs for your bypassed link."
@@ -126,7 +126,7 @@ module.exports = class BypassCommand extends Command {
                 },
                 "author": {
                     "name": "Shortlink Bot",
-                    "url": "https://github.com/respecting/shortlink-bot",
+                    "url": "https://github.com/Rismose/shortlink-bot",
                     "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
                 }
             }).then(msg => setTimeout(() => msg.delete(), 10000))

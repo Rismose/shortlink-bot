@@ -25,7 +25,7 @@ module.exports = class InfoCommand extends Command {
             }],
             "author": {
                 "name": "Shortlink Bot",
-                "url": "https://github.com/respecting/shortlink-bot",
+                "url": "https://github.com/Rismose/shortlink-bot",
                 "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
             }
         });
