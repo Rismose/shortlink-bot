@@ -67,7 +67,8 @@ module.exports = class BypassCommand extends Command {
                 "discord.kim",
                 "goo.gl",
                 "zzb.bz",
-                "adf.ly"
+                "adf.ly",
+                "grabify.link"
             ],
             fetch = require('node-fetch');
 
