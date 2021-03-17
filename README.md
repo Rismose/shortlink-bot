@@ -14,8 +14,9 @@ Now Maintained By [Rismose](https://github.com/Rismose) & [jiggey](https://githu
 
 # Demo
 
-![Demo (Outdated)](demo.gif)
+![Demo](demo.gif)
 
+*The bot sends a message to your DM's, It isn't clear in the DEMO above*
 # Credits
 [Sainan/Universal-Bypass](https://github.com/Sainan/Universal-Bypass) for old linkvertise bypass.
 
