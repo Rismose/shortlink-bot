@@ -1,4 +1,4 @@
-const { Message } = require('discord.js');
+const { Message, MessageFlags } = require('discord.js');
 const {Command} = require('discord.js-commando'),
     fs = require('fs');
 require("dotenv").config();
@@ -12,8 +12,8 @@ module.exports = class BypassCommand extends Command {
             memberName: 'bypass',
             description: 'Finds what is behind the shortlink.',
             throttling: {
-                usages: 5,
-                duration: 30,
+                usages: 3,
+                duration: 45,
             },
             args: [{
                 key: 'link',
@@ -64,7 +64,10 @@ module.exports = class BypassCommand extends Command {
                 "blasze.tk",
                 "ipgrab.org",
                 "gyazos.com",
-                "discord.kim"
+                "discord.kim",
+                "goo.gl",
+                "zzb.bz",
+                "adf.ly"
             ],
             fetch = require('node-fetch');
 
@@ -228,6 +231,7 @@ module.exports = class BypassCommand extends Command {
                     if (json._idleTimeout) return msg.channel.send("An error has occurred. Please try again later.").msg.delete({timeout: 5000});
                     let bypassedLink = json.data.target; //bypassed link goes here.
                     createBypassEmbed(url, bypassedLink, ping)
+                    message.stopTyping()
                 })
                 }catch(e) {
                     console.log(e)
