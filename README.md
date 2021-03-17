@@ -14,7 +14,7 @@ Now Maintained By [Rismose](https://github.com/Rismose) & [jiggey](https://githu
 
 # Demo
 
-![Demo](demo.gif)
+![Demo](demo1.gif)
 
 *The bot sends a message to your DM's, It isn't clear in the DEMO above*
 # Credits
