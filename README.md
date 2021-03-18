@@ -88,7 +88,8 @@ An example of a serial is:
   "random":"6548307", 
   "link_id":00000000
 }
-``` ```js
+``` 
+```js
 ({
   "timestamp":new Date().getTime(), 
   "random":"6548307", 
