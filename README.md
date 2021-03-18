@@ -18,19 +18,7 @@ Now Maintained By [Rismose](https://github.com/Rismose) & [jiggey](https://githu
 
 *The bot sends a message to your DM's, It isn't clear in the DEMO above*
 # Credits
-[Sainan/Universal-Bypass](https://github.com/Sainan/Universal-Bypass) for old linkvertise bypass.
-
-# How does it work? (for bypassing linkvertise?)
-The bot sends a request to Linkvertise (https://publisher.linkvertise.com/api/v1/redirect/link/static/insert/linkvertise/path/here) and obtains the link id necessary to get the link.
-
-Then, it sends another request to them (https://publisher.linkvertise.com/api/v1/redirect/link/insert/linkvertise/path/here/target?serial=base64encodedjson) to grab the link.
-
-The linkvertise path is this part. (/respecting/linkvertise-bypass/)
-
-An example of a serial is: 
-`{"timestamp":0000000000, "random":"6548307", "link_id":00000000}`
-
-The timestamp is the unix epoch, random isn't really random (always has to be 6548307) and link_id is the id we obtained from the first request.
+[Sainan/Universal-Bypass](https://github.com/Sainan/Universal-Bypass) for the old linkvertise bypass.
 
 # Usage
 1. Clone this repository
@@ -63,3 +51,69 @@ owner=
 # Formatting
 
 Please format your proxies like the chart listed [here](https://github.com/TooTallNate/node-proxy-agent/blob/master/README.md).
+
+# How does it work? (for bypassing linkvertise?)
+First, we parse the user's submitted linkvertise link and get the path!
+
+We're going to use JS for these examples. (**Note! These examples have NOT BEEN tested, and probably won't work in a real environment!**)
+
+```js
+var linkvertiseURL = new URL("https://linkvertise.com/123456/gaming?o=sharing")
+console.log(linkvertiseURL.pathname)
+```
+
+Here's a cool diagram so you can understand:
+```
+https://linkvertise.com/123456/gaming?o=sharing
+          ^                ^^^^^^          ^
+  junk we dont need    we need this   junk we dont need
+```
+
+Since we've parsed the link sucessfully, we now have to send a request to Linkvertise to obtain the link id.
+
+```js
+var linkId;
+fetch("https://publisher.linkvertise.com/api/v1/redirect/link/static"+linkvertiseURL.pathname).then(r=>r.json()).then(j=>{
+  linkId = j.data.link.id
+})
+```
+
+Now we have to create a serial, to actually get the bypassed link.
+
+An example of a serial is: 
+
+```json
+{
+  "timestamp":0000000000, 
+  "random":"6548307", 
+  "link_id":00000000
+}
+``` ```js
+({
+  "timestamp":new Date().getTime(), 
+  "random":"6548307", 
+  "link_id":linkId
+})
+```
+
+The timestamp is the unix epoch in milliseconds, we can ignore random (It's always 6548307) and link_id is the ID we obtained from the first request. After creating our serial, we need to convert it to base64.
+
+```js
+serial = btoa(JSON.stringify({ //btoa means to base64 encode, JSON.stringify turns the serial JSON into a string so btoa doesn't throw errors.
+  "timestamp":new Date().getTime(), 
+  "random":"6548307", 
+  "link_id":linkid
+}));
+```
+
+Now, we just have to send a request to Linkvertise to get the bypassed link!
+
+```js
+var bypassedLink;
+fetch("https://publisher.linkvertise.com/api/v1/redirect/link" + linkvertiseURL.path + "/target?serial=" + serial, {
+  method: "POST"
+}).then(r=>r.json()).then(j=>{
+  bypassedLink = j.data.target;
+  console.log(bypassedLink)
+})
+```
