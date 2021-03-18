@@ -152,19 +152,29 @@ module.exports = class BypassCommand extends Command {
             }
         }
 
-        function adshrinkit(html, url, msg, timestamp) {
-            createBypassEmbed(url, html.split('url\\":\\"')[1].split('\\\",')[0].replace(/\\/g, ""), timestamp, msg)
+        function adshrinkit(html, url, timestamp) {
+            createBypassEmbed(url, html.split('url\\":\\"')[1].split('\\\",')[0].replace(/\\/g, ""), timestamp)
         }
 
-        function boostink(html, url, msg, timestamp) {
-            createBypassEmbed(url, Buffer.from(html.split('version=')[1].split('"')[1], 'base64').toString('ascii'), timestamp, msg)
+        function rekonise(url, timestamp) {
+            fetch("https://api.rekonise.com/unlocks/"+url.pathname).then(r=>r.json()).then(j=>{
+                createBypassEmbed(url, j.url, timestamp)
+            })
         }
 
-        function mboost(html, url, msg, timestamp) {
-            createBypassEmbed(url, html.split('{"pageProps":{"data":{"targeturl":"')[1].split('"')[0], timestamp, msg)
+        function shortconnect(html, url, timestamp) {
+            createBypassEmbed(url, html.split('seconds, <a href="')[1].split('""\>')[0], timestamp)
         }
 
-        function adfly(html, url, msg, timestamp) {
+        function boostink(html, url, timestamp) {
+            createBypassEmbed(url, Buffer.from(html.split('version=')[1].split('"')[1], 'base64').toString('ascii'), timestamp)
+        }
+
+        function mboost(html, url, timestamp) {
+            createBypassEmbed(url, html.split('{"pageProps":{"data":{"targeturl":"')[1].split('"')[0], timestamp)
+        }
+
+        function adfly(html, url, timestamp) {
             let a, m, I = "",
                 X = "",
                 r = html.split(`var ysmm = `)[1].split('\'')[1]
@@ -195,12 +205,12 @@ module.exports = class BypassCommand extends Command {
             r = Buffer.from(r, 'base64').toString('ascii');
             r = r.substring(r.length - (r.length - 16));
             r = r.substring(0, r.length - 16);
-            if (new URL(r).search.includes("dest=")) return createBypassEmbed(url, decodeURIComponent(r.split('dest=')[1]), timestamp, msg)
-            createBypassEmbed(url, r, timestamp, msg)
+            if (new URL(r).search.includes("dest=")) return createBypassEmbed(url, decodeURIComponent(r.split('dest=')[1]), timestamp)
+            createBypassEmbed(url, r, timestamp)
         }
 
-        function s2u(url, msg, html, timestamp) {
-            createBypassEmbed(url, html.split('<div id="theGetLink" style="display: none">')[1].split('</div>')[0], timestamp, msg)
+        function s2u(url, html, timestamp) {
+            createBypassEmbed(url, html.split('<div id="theGetLink" style="display: none">')[1].split('</div>')[0], timestamp)
         }
 
         function linkvertise(url) {
@@ -212,7 +222,7 @@ module.exports = class BypassCommand extends Command {
                 headers: {
                     "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
                 },
-            }).then(r => r.json().catch(() => createErrorEmbed('Linkvertise is ratelimited, or the supplied link was invalid. Try another one, and if it happens again, contact the bot developer.', msg))).then(json => {
+            }).then(r => r.json().catch(() => createErrorEmbed('Linkvertise is ratelimited, or the supplied link was invalid. Try another one, and if it happens again, contact the bot developer.'))).then(json => {
                 if (json._idleTimeout) return;
                 o = Buffer.from(JSON.stringify({
                     "timestamp": new Date().getTime(),
@@ -247,11 +257,13 @@ module.exports = class BypassCommand extends Command {
                 let timestamp = new Date().getTime(),
                     resp = await fetch(url.href),
                     html = await resp.text();
-                if (url.hostname.includes("mboost.me")) return mboost(html, new URL(resp.url), msg, timestamp);
-                if (html.includes('<meta name="description" content="Shrink your URLs and get paid!" />')) return adfly(html, new URL(resp.url), msg, timestamp)
-                if (html.includes(' - Sub2Unlock - ')) return s2u(new URL(resp.url), msg, html, timestamp);
-                if (html.includes('<title>Boost.ink - Complete the steps to proceed</title>')) return boostink(html, new URL(resp.url), msg, timestamp);
-                if (html.includes('<title>AdShrink.it - </title>')) return adshrinkit(html, new URL(resp.url), msg, timestamp);
+                if (url.hostname.includes("mboost.me")) return mboost(html, new URL(resp.url), timestamp);
+                if (html.includes('<title>Create Free Social Unlocks - Rekonise</title>')) return rekonise(url, timestamp)
+                if (html.includes('<title>shorten and protect links</title>')) return shortconnect(html, url, timestamp)
+                if (html.includes('<meta name="description" content="Shrink your URLs and get paid!" />')) return adfly(html, new URL(resp.url), timestamp)
+                if (html.includes(' - Sub2Unlock - ')) return s2u(new URL(resp.url), html, timestamp);
+                if (html.includes('<title>Boost.ink - Complete the steps to proceed</title>')) return boostink(html, new URL(resp.url), timestamp);
+                if (html.includes('<title>AdShrink.it - </title>')) return adshrinkit(html, new URL(resp.url), timestamp);
                 if (html.includes('<title>Loading... | Linkvertise</title>')) {
                     if (url.href.includes("dynamic")) {
                         return createBypassEmbed(url, Buffer.from(new URLSearchParams(url.search).get("r"), 'base64').toString('ascii'), timestamp);
@@ -259,7 +271,7 @@ module.exports = class BypassCommand extends Command {
                     linkvertise(new URL(resp.url));
                 } else {
                     if (url.href == new URL(resp.url)) return createErrorEmbed('The link you provided is invalid. Please check your link and try again!')
-                    createBypassEmbed(url, resp.url, timestamp, msg)
+                    createBypassEmbed(url, resp.url, timestamp)
                 }
             } catch (err) {
                 createErrorEmbed(`The link provided (${url.href}) is invalid.`)
