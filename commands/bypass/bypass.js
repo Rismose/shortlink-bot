@@ -67,7 +67,6 @@ module.exports = class BypassCommand extends Command {
                 "discord.kim",
                 "goo.gl",
                 "zzb.bz",
-                "adf.ly",
                 "grabify.link"
             ],
             fetch = require('node-fetch');
@@ -78,15 +77,15 @@ module.exports = class BypassCommand extends Command {
             msg.channel.stopTyping()
             msg.author.send({
                 embed: {
-                    "title": `Bypassed the link successfully in ${new Date().getTime()-time} ms.`,
+                    "title": `Bypassed the link successfully in ${new Date().getTime()-time}ms.`,
                     "color": 1964014,
                     "footer": {
                         "icon_url": "https://miro.medium.com/max/719/0*9f5uMrKMjLbzEf7q.png",
-                        "text": `github @ Rismose/shortlink-bot`
+                        "text": `GitHub @ Rismose/shortlink-bot`
                     },
                     "author": {
                         "name": "Shortlink Bot",
-                        "url": "https://github.com/Rismose/shortlink-bot",
+                        "url": "https://GitHub.com/Rismose/shortlink-bot",
                         "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
                     },
                     "fields": [{
@@ -100,28 +99,28 @@ module.exports = class BypassCommand extends Command {
                     ]
                 }
             }).catch(err => {
-                createErrorEmbed("Please enable DMs.")
+                createErrorEmbed("You do not have DM's enabled! I cannot send you your bypassed link. Please enable DM's and continue.")
             })
             if (msg.channel.type != "dm") msg.embed({
-                "title": `Bypass sent!`,
+                "title": `Link Bypassed!`,
                 "color": 1964014,
                 "footer": {
                     "icon_url": "https://miro.medium.com/max/719/0*9f5uMrKMjLbzEf7q.png",
-                    "text": `github @ Rismose/shortlink-bot`
+                    "text": `GitHub @ Rismose/shortlink-bot`
                 },
                 "author": {
                     "name": "Shortlink Bot",
-                    "url": "https://github.com/Rismose/shortlink-bot",
+                    "url": "https://GitHub.com/Rismose/shortlink-bot",
                     "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
                 },
-                "description": "See your DMs for your bypassed link."
-            }).then(msg => setTimeout(() => msg.delete(), 5000))
+                "description": "I have sent the bypassed link to your DM's!"
+            }).then(msg => setTimeout(() => msg.delete(), 7000))
         }
 
         function createErrorEmbed(errorInfo) {
             msg.channel.stopTyping()
             return msg.embed({
-                "title": "ERROR",
+                "title": "ERROR!",
                 "description": errorInfo,
                 "color": 15158332,
                 "footer": {
@@ -130,7 +129,7 @@ module.exports = class BypassCommand extends Command {
                 },
                 "author": {
                     "name": "Shortlink Bot",
-                    "url": "https://github.com/Rismose/shortlink-bot",
+                    "url": "https://GitHub.com/Rismose/shortlink-bot",
                     "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
                 }
             }).then(msg => setTimeout(() => msg.delete(), 10000))
@@ -141,11 +140,11 @@ module.exports = class BypassCommand extends Command {
                 url = url + " "
                 let urls = [...new Set(url.split(' '))].filter(Boolean);
                 if (urls.length > 3) {
-                    return createErrorEmbed("Provided too many links! (Limit is 3.)");
+                    return createErrorEmbed("Provided too many links! (Limit: 3)");
                 }
                 urls.forEach(url => {
                     url = new URL(url);
-                    if (ipLoggers.includes(url.host)) return createErrorEmbed(`The link provided (${url.host}) is an ip logger.`);
+                    if (ipLoggers.includes(url.host)) return createErrorEmbed(`The Link You Have Given (${url.host}) Is Flagged As An IP Logger. Please do not try this.`);
                     bypass(url)
                 })
             } catch (e) {
@@ -205,7 +204,7 @@ module.exports = class BypassCommand extends Command {
         }
 
         function linkvertise(url) {
-            msg.delete({timeout: 50}) //Don't change this number! It is set to 50 to stop a bug on Discord.\
+            msg.delete({timeout: 50}) //Don't change this number! It is set to 50 to stop a bug on Discord.
             let ping = new Date().getTime(),
                 path = `/${url.pathname.replace('/download','').split('/')[1]}/${url.pathname.replace('/download','').split('/')[2]}`;
             fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static' + path, {
@@ -243,7 +242,7 @@ module.exports = class BypassCommand extends Command {
         async function bypass(url) {
             try {
                 if (!msg.channel.type === 'dm') msg.delete().catch(() => {
-                    createErrorEmbed('Please let me have access to Manage Messages so I can delete bypass commands.', originalCommand)
+                    createErrorEmbed('Please Give Me The Permission ``Manage Messages`` So I Can Remove My Bypass Messages.', originalCommand)
                 });
                 let timestamp = new Date().getTime(),
                     resp = await fetch(url.href),
@@ -259,7 +258,7 @@ module.exports = class BypassCommand extends Command {
                     }
                     linkvertise(new URL(resp.url));
                 } else {
-                    if (url.href == new URL(resp.url)) return createErrorEmbed('The link provided is invalid.')
+                    if (url.href == new URL(resp.url)) return createErrorEmbed('The link you provided is invalid. Please check your link and try again!')
                     createBypassEmbed(url, resp.url, timestamp, msg)
                 }
             } catch (err) {
