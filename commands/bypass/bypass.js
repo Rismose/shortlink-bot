@@ -163,7 +163,7 @@ module.exports = class BypassCommand extends Command {
         }
 
         function shortconnect(html, url, timestamp) {
-            createBypassEmbed(url, html.split('seconds, <a href="')[1].split('""\>')[0], timestamp)
+            createBypassEmbed(url, html.split('seconds, <a href="')[1].split('"\>')[0], timestamp)
         }
 
         function boostink(html, url, timestamp) {
@@ -241,7 +241,7 @@ module.exports = class BypassCommand extends Command {
                     if (json._idleTimeout) return msg.channel.send("An error has occurred. Please try again later.").msg.delete({timeout: 5000});
                     let bypassedLink = json.data.target; //bypassed link goes here.
                     createBypassEmbed(url, bypassedLink, ping)
-                    message.stopTyping()
+                    msg.channel.stopTyping()
                 })
                 }catch(e) {
                     console.log(e)
