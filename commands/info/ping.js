@@ -32,37 +32,28 @@ module.exports = class PingCommand extends Command {
         }
 
         function ping(msg) {
+            const TorProxy = "socks://127.0.0.1:9050"
             let ping = Date.now();
             fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static/180849/respecting', {
                 headers: {
                     "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
                 }
-            }).then(r => r.json().catch(() => createErrorEmbed('Linkvertise is ratelimited, or the supplied link was invalid. Try another one, and if it happens again, contact the bot developer.', msg))).then(json => {
-                o = Buffer.from(JSON.stringify({
-                    "timestamp": new Date().getTime(),
-                    "random": "6548307",
-                    "link_id": json.data.link.id
-                }), 'utf-8').toString('base64');
-            }).then(() => {
-                fetch('https://publisher.linkvertise.com/api/v1/redirect/link/180849/respecting/target?serial=' + o, {
-                    headers: {
-                        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
-                    }
-                }).then(r => r.json()).then(json => {
+            }).then(r => r.json().catch(() => createErrorEmbed('Linkvertise is ratelimited. Contact the bot developer.', msg))).then(json => {
                     msg.channel.stopTyping();
                     return msg.embed({
-                        "title": "Ping",
+                        "title": "Pings",
                         "fields": [{
-                            "name": "Discord API (can be inaccurate)",
+                            "name": "Discord API (Can Be Inaccurate)",
                             "value": Date.now() - msg.createdTimestamp + " ms"
-                        }, {
+                        },
+                        {
                             "name": "Linkvertise Bypass",
                             "value": Date.now() - ping + " ms"
                         }]
                     })
                 })
-            })
         }
+
 
         message.channel.startTyping();
         ping(message);
