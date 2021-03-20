@@ -33,7 +33,7 @@ module.exports = class PingCommand extends Command {
 
         function ping(msg) {
             let ping = Date.now();
-            /*fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static/180849/respecting', {
+            fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static/180849/respecting', {
                 headers: {
                     "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
                 }
@@ -49,7 +49,7 @@ module.exports = class PingCommand extends Command {
                         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
                     }
                 }).then(r => r.json().catch(() => createErrorEmbed('Linkvertise is ratelimited. Contact the bot developer.', msg))).then(json => {
-                    msg.channel.stopTyping();*/
+                    msg.channel.stopTyping();
                     return msg.embed({
                         "title": "Ping",
                         "fields": [{
@@ -57,11 +57,11 @@ module.exports = class PingCommand extends Command {
                             "value": Date.now() - msg.createdTimestamp + " ms"
                         }, {
                             "name": "Linkvertise Bypass",
-                            "value": "Disabled."
+                            "value": Date.now() - ping + " ms"
                         }]
                     })
-                //})
-            //})
+                })
+            })
         }
 
         message.channel.startTyping();
