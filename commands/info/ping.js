@@ -32,7 +32,6 @@ module.exports = class PingCommand extends Command {
         }
 
         function ping(msg) {
-            const TorProxy = "socks://127.0.0.1:9050"
             let ping = Date.now();
             fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static/180849/respecting', {
                 headers: {
