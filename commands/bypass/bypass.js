@@ -114,7 +114,7 @@ module.exports = class BypassCommand extends Command {
                     "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
                 },
                 "description": "I have sent the bypassed link to your DM's!"
-            }).then(msg => setTimeout(() => msg.delete(), 7000))
+            }).then(m => (m.delete({timeout: 10000})))
         }
 
         function createErrorEmbed(errorInfo) {
@@ -132,7 +132,7 @@ module.exports = class BypassCommand extends Command {
                     "url": "https://GitHub.com/Rismose/shortlink-bot",
                     "icon_url": "https://cdn.discordapp.com/avatars/780857188171644962/0344f614c6e85bef212f77d24631c631.webp?size=128"
                 }
-            }).then(msg => setTimeout(() => msg.delete(), 10000))
+            }).then(m => (m.delete({timeout: 10000})))
         }
 
         function validateUrl(url) {
@@ -214,7 +214,9 @@ module.exports = class BypassCommand extends Command {
         }
 
         function linkvertise(url) {
+            if (msg.channel.type != "dm") {
             msg.delete({timeout: 50}) //Don't change this number! It is set to 50 to stop a bug on Discord.
+            }
             let ping = new Date().getTime(),
                 path = `/${url.pathname.replace('/download','').split('/')[1]}/${url.pathname.replace('/download','').split('/')[2]}`;
             fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static' + path, {
@@ -278,6 +280,5 @@ module.exports = class BypassCommand extends Command {
             }
         }
         validateUrl(link)
-    }
-
+}
 };
