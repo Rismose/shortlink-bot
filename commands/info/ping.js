@@ -48,7 +48,7 @@ module.exports = class PingCommand extends Command {
                     headers: {
                         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
                     }
-                }).then(r => r.json().catch(() => createErrorEmbed('Linkvertise is ratelimited. Contact the bot developer.', msg))).then(json => {
+                }).then(r => r.json()).then(json => {
                     msg.channel.stopTyping();
                     return msg.embed({
                         "title": "Ping",
