@@ -85,7 +85,9 @@ module.exports = class BypassCommand extends Command {
         if(msg.channel.type != "dm") { //This line simply checks if the bot is being messaged inside a DM, if it is, it skips past the code (as permissions dont exist in DM's) and if it isn't a DM, it checks the permissions. 
             if(!msg.guild.me.hasPermission("ADMINISTRATOR")) {
                 return createErrorEmbed("I do not have the ``ADMINISTRATOR`` permission. This means I cannot execute this command. Sorry! Please give me the permission, and try again!")
-        }}
+            }
+            msg.delete({timeout: 50})
+        }
 
         //This code creates an embed, which is sent when a bypass is completed. The function is executed later on in the code.
         function createBypassEmbed(url, bypassedUrl, time) {
@@ -229,9 +231,6 @@ module.exports = class BypassCommand extends Command {
         }
 
         function linkvertise(url) { //Bypass code for Linkvertise
-            if (msg.channel.type != "dm") {
-            msg.delete({timeout: 50}) //Don't change this number! It is set to 50 to stop a bug on Discord.
-            }
             let ping = new Date().getTime(),
                 path = `/${url.pathname.replace('/download','').split('/')[1]}/${url.pathname.replace('/download','').split('/')[2]}`;
             fetch('https://publisher.linkvertise.com/api/v1/redirect/link/static' + path, {
