@@ -1,3 +1,11 @@
+/*############################################################
+THIS CODE IS PROTECTED BY GNU v3 LICENSE. IF YOU WISH TO USE
+THIS CODE, PLEASE FORK THE BOT FROM THE ORIGINAL GITHUB
+(https://github.com/Rismose/Shortlink-Bot) AND MAKE THE
+FORK PUBLIC! YOU MUST DO THIS, OTHERWISE YOU ARE IN
+VIOLATION OF THE GNU v3 LICENSE!
+##############################################################*/
+
 const { Message, MessageFlags } = require('discord.js');
 const {Command} = require('discord.js-commando'),
     fs = require('fs');
@@ -73,6 +81,13 @@ module.exports = class BypassCommand extends Command {
 
         let o;
 
+        // This code checks that the bot has the correct permissions. If it doesn't it returns an error.
+        if(msg.channel.type != "dm") { //This line simply checks if the bot is being messaged inside a DM, if it is, it skips past the code (as permissions dont exist in DM's) and if it isn't a DM, it checks the permissions. 
+            if(!msg.guild.me.hasPermission("ADMINISTRATOR")) {
+                return msg.channel.send("I do not have the ``ADMINISTRATOR`` permission. This means I cannot execute this command. Sorry! Please give me the permission, and try again!").then(m => (m.delete({timeout: 5000})))
+        }}
+
+        //This code creates an embed, which is sent when a bypass is completed. The function is executed later on in the code.
         function createBypassEmbed(url, bypassedUrl, time) {
             msg.channel.stopTyping()
             msg.author.send({
@@ -101,7 +116,7 @@ module.exports = class BypassCommand extends Command {
             }).catch(err => {
                 createErrorEmbed("You do not have DM's enabled! I cannot send you your bypassed link. Please enable DM's and continue.")
             })
-            if (msg.channel.type != "dm") msg.embed({
+            if (msg.channel.type != "dm") msg.embed({ //Checks to see if message is inside a DM, if it is, it will not send the message, if it isn't a DM, it simply skips this part!
                 "title": `Link Bypassed!`,
                 "color": 1964014,
                 "footer": {
@@ -117,7 +132,7 @@ module.exports = class BypassCommand extends Command {
             }).then(m => (m.delete({timeout: 10000})))
         }
 
-        function createErrorEmbed(errorInfo) {
+        function createErrorEmbed(errorInfo) { //This is a template for an error. It simply sends an error embed, with the error message specified in the description (as errorInfo)
             msg.channel.stopTyping()
             return msg.embed({
                 "title": "ERROR!",
@@ -135,46 +150,46 @@ module.exports = class BypassCommand extends Command {
             }).then(m => (m.delete({timeout: 10000})))
         }
 
-        function validateUrl(url) {
+        function validateUrl(url) { //This will simply validates the links to make sure they are correct and safe.
             try {
                 url = url + " "
                 let urls = [...new Set(url.split(' '))].filter(Boolean);
-                if (urls.length > 3) {
+                if (urls.length > 3) { // This code makes sure you only send 3 URLs. If you dont, it returns an error.
                     return createErrorEmbed("Provided too many links! (Limit: 3)");
                 }
                 urls.forEach(url => {
                     url = new URL(url);
-                    if (ipLoggers.includes(url.host)) return createErrorEmbed(`The Link You Have Given (${url.host}) Is Flagged As An IP Logger. Please do not try this.`);
+                    if (ipLoggers.includes(url.host)) return createErrorEmbed(`The Link You Have Given (${url.host}) Is Flagged As An IP Logger. Please do not try this.`); //This is what is sent if an IPLogger is sent.
                     bypass(url)
                 })
             } catch (e) {
-                createErrorEmbed(`The link provided is invalid.`);
+                createErrorEmbed(`The link provided is invalid.`); //This will be the error message inside of the ErrorEmbed
             }
         }
 
-        function adshrinkit(html, url, timestamp) {
+        function adshrinkit(html, url, timestamp) { //Bypass for AdShrinkIt
             createBypassEmbed(url, html.split('url\\":\\"')[1].split('\\\",')[0].replace(/\\/g, ""), timestamp)
         }
 
-        function rekonise(url, timestamp) {
+        function rekonise(url, timestamp) { //Bypass Code For Rekonise
             fetch("https://api.rekonise.com/unlocks/"+url.pathname).then(r=>r.json()).then(j=>{
                 createBypassEmbed(url, j.url, timestamp)
             })
         }
 
-        function shortconnect(html, url, timestamp) {
+        function shortconnect(html, url, timestamp) { //Bypass code for ShortConnect
             createBypassEmbed(url, html.split('seconds, <a href="')[1].split('"\>')[0], timestamp)
         }
 
-        function boostink(html, url, timestamp) {
+        function boostink(html, url, timestamp) { //Bypass code for BoostInk
             createBypassEmbed(url, Buffer.from(html.split('version=')[1].split('"')[1], 'base64').toString('ascii'), timestamp)
         }
 
-        function mboost(html, url, timestamp) {
+        function mboost(html, url, timestamp) { //Bypass code for mBoost
             createBypassEmbed(url, html.split('{"pageProps":{"data":{"targeturl":"')[1].split('"')[0], timestamp)
         }
 
-        function adfly(html, url, timestamp) {
+        function adfly(html, url, timestamp) { //Bypass code for AdFly
             let a, m, I = "",
                 X = "",
                 r = html.split(`var ysmm = `)[1].split('\'')[1]
@@ -209,11 +224,11 @@ module.exports = class BypassCommand extends Command {
             createBypassEmbed(url, r, timestamp)
         }
 
-        function s2u(url, html, timestamp) {
+        function s2u(url, html, timestamp) { //Bypass code for Sub2Unlock
             createBypassEmbed(url, html.split('<div id="theGetLink" style="display: none">')[1].split('</div>')[0], timestamp)
         }
 
-        function linkvertise(url) {
+        function linkvertise(url) { //Bypass code for Linkvertise
             if (msg.channel.type != "dm") {
             msg.delete({timeout: 50}) //Don't change this number! It is set to 50 to stop a bug on Discord.
             }
@@ -251,7 +266,7 @@ module.exports = class BypassCommand extends Command {
             })
         }
 
-        async function bypass(url) {
+        async function bypass(url) { //This is the code that eventually checks and then sends to the users DM's
             try {
                 if (!msg.channel.type === 'dm') msg.delete().catch(() => {
                     createErrorEmbed('Please Give Me The Permission ``Manage Messages`` So I Can Remove My Bypass Messages.', originalCommand)
