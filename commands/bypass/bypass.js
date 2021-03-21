@@ -84,7 +84,7 @@ module.exports = class BypassCommand extends Command {
         // This code checks that the bot has the correct permissions. If it doesn't it returns an error.
         if(msg.channel.type != "dm") { //This line simply checks if the bot is being messaged inside a DM, if it is, it skips past the code (as permissions dont exist in DM's) and if it isn't a DM, it checks the permissions. 
             if(!msg.guild.me.hasPermission("ADMINISTRATOR")) {
-                return msg.channel.send("I do not have the ``ADMINISTRATOR`` permission. This means I cannot execute this command. Sorry! Please give me the permission, and try again!").then(m => (m.delete({timeout: 5000})))
+                return createErrorEmbed("I do not have the ``ADMINISTRATOR`` permission. This means I cannot execute this command. Sorry! Please give me the permission, and try again!")
         }}
 
         //This code creates an embed, which is sent when a bypass is completed. The function is executed later on in the code.
