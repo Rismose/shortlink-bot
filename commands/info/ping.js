@@ -1,3 +1,11 @@
+/*############################################################
+THIS CODE IS PROTECTED BY GNU v3 LICENSE. IF YOU WISH TO USE
+THIS CODE, PLEASE FORK THE BOT FROM THE ORIGINAL GITHUB
+(https://github.com/Rismose/Shortlink-Bot) AND MAKE THE
+FORK PUBLIC! YOU MUST DO THIS, OTHERWISE YOU ARE IN
+VIOLATION OF THE GNU v3 LICENSE!
+##############################################################*/
+
 const {Command} = require('discord.js-commando');
 
 module.exports = class PingCommand extends Command {

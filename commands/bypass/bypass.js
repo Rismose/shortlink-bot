@@ -222,10 +222,18 @@ module.exports = class BypassCommand extends Command {
             r = Buffer.from(r, 'base64').toString('ascii');
             r = r.substring(r.length - (r.length - 16));
             r = r.substring(0, r.length - 16);
-            if (new URL(r).search.includes("dest=")) return createBypassEmbed(url, decodeURIComponent(r.split('dest=')[1]), timestamp)
-            createBypassEmbed(url, r, timestamp)
+            if (new URL(r).search.includes("dest=")) {
+                if(r.includes("linkvertise.com")){
+                    linkvertise(new URL(decodeURIComponent(r.split('dest=')[1])));
+                }
+                return createBypassEmbed(url, decodeURIComponent(r.split('dest=')[1]), timestamp, msg)
+            }
+            if(r.includes("linkvertise.com")){
+                linkvertise(new URL(r));
+            }
+            createBypassEmbed(url, r, timestamp, msg)
         }
-
+        
         function s2u(url, html, timestamp) { //Bypass code for Sub2Unlock
             createBypassEmbed(url, html.split('<div id="theGetLink" style="display: none">')[1].split('</div>')[0], timestamp)
         }
