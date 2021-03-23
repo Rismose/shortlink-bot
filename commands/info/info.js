@@ -15,7 +15,7 @@ module.exports = class InfoCommand extends Command {
             "title": "Information",
             "fields": [{
                 "name": "Hi! I'm Shortlink Bot.",
-                "value": ":wave:"
+                "value": "This is the original Shortlink Bot! The source code is open!"
             }, {
                 "name": "I find what's behind the shortlink, like adf.ly, bit.ly and Linkvertise!",
                 "value": ":link:"
