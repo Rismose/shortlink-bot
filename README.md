@@ -3,6 +3,8 @@ A discord bot that bypasses pesky ad-links using node-fetch, and Discord.js-Comm
 
 Originally created by the super cute [respecting / lemons](https://github.com/respecting)
 
+This is the origial source code, make sure you follow the license when using the source code.
+
 Now Maintained By [Rismose](https://github.com/Rismose) & [jiggey](https://github.com/jiggey1) <3
 
 # Support Server
