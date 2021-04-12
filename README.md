@@ -120,3 +120,4 @@ fetch("https://publisher.linkvertise.com/api/v1/redirect/link" + linkvertiseURL.
   console.log(bypassedLink)
 })
 ```
+* Please note that the logging links to console is only for demonstration purposes.
